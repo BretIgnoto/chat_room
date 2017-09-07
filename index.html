@@ -1,0 +1,52 @@
+<html>
+<head>
+	<title>Chat Room</title>
+    <link href="styles.css" rel="stylesheet">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type ="text/javascript">
+        $(document).ready(function (){
+            var socket = io.connect();
+            var username;
+            function requestName() {
+	            while(!username) {
+	            	username = prompt('Please enter a username: ');
+                    console.log(username);
+	            	socket.emit('requestName', {name : username});
+	            }
+	        }
+	        requestName();
+            socket.on('nameResponse', function(data) {
+            	username=status.name;
+            	if(data.status=='Not Good') {requestName()}
+            })
+            $('form').submit(function() {
+            	var msg = $('#message').val();
+            	$('#message').val(''); 
+            	socket.emit('sendMessage', {message : msg});
+            	return false;
+            })
+            socket.on('serverResponse', function(data) {
+            	console.log(data);
+            	$('#scroller').append('<p>' + data.message + '</p>');
+                $("#scroller").animate({ scrollTop: $('#scroller')[0].scrollHeight }, "fast");
+            })
+        })
+    </script>
+    <script>
+    </script>
+</head>
+<body>
+    <div id="container">
+        <div id="chat">
+            <h1>Chat Room</h1>
+        	<div id='scroller'>
+        	</div>
+        	<form method='post'>
+        		<input type='text' id="message" name='chat' autocomplete='off'>
+        		<button>Chat</button>
+        	</form>
+        </div>
+    </div>
+</body>
+</html>

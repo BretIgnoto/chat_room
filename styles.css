@@ -1,0 +1,17 @@
+#container {
+}
+#chat {
+	margin: auto;
+	width: 525px;
+}
+#scroller {
+	height: 350px;
+	width: 500px;
+	border: 5px ridge;
+	overflow: auto;
+	margin-bottom: 5px;
+	padding-left: 5px;
+}
+h1 {
+	text-align: center;
+}
